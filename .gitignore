@@ -1,0 +1,33 @@
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.env
+.env.*
+venv/
+
+# Node
+node_modules/
+build/
+dist/
+
+# Docker
+*.pid
+*.log
+**/postgres_data/
+**/redis_data/
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db 
+
+# Backend
+booklist-backend/.env
+
+# Frontend
+booklist-front/node_modules/
+booklist-front/dist/

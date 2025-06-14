@@ -1,28 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './DailyNews.css';
 
+interface BookDiscovery {
+  title: string;
+  author: string;
+  description: string;
+  image_url: string;
+  category: string;
+}
+
 const DailyNews: React.FC = () => {
+  const [books, setBooks] = useState<BookDiscovery[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/daily-discoveries')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch discoveries');
+        return res.json();
+      })
+      .then((data) => {
+        setBooks(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <section className="daily-news">
       <div className="daily-news__header">
         <h2>Daily Book Discoveries</h2>
         <p>Explore today's featured books from Google Books</p>
       </div>
-      
       <div className="daily-news__grid">
-        {/* Placeholder for book cards - will be populated with API data */}
-        <div className="book-card">
-          <div className="book-card__image-placeholder">
-            <span>Book Cover</span>
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {!loading && !error && books.length === 0 && <p>No discoveries found.</p>}
+        {books.map((book, idx) => (
+          <div className="book-card" key={idx}>
+            {book.image_url ? (
+              <img className="book-card__image" src={book.image_url} alt={book.title} />
+            ) : (
+              <div className="book-card__image-placeholder">
+                <span>No Cover</span>
+              </div>
+            )}
+            <div className="book-card__content">
+              <h3>{book.title}</h3>
+              <p className="book-card__author">{book.author}</p>
+              <p className="book-card__description">{book.description}</p>
+              <span className="book-card__category">{book.category}</span>
+            </div>
           </div>
-          <div className="book-card__content">
-            <h3>Book Title</h3>
-            <p className="book-card__author">Author Name</p>
-            <p className="book-card__description">
-              Book description will appear here...
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from database import engine, SessionLocal, Base, init_db
 import crud, schemas
 import logging
+from google_books import get_daily_discoveries
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -44,3 +45,8 @@ def add_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
 def remove_book(book_id: int, db: Session = Depends(get_db)):
     logger.info(f"Deleting book with id: {book_id}")
     return crud.delete_book(db, book_id)
+
+@app.get("/daily-discoveries", response_model=list[schemas.BookDiscovery])
+def get_daily_book_discoveries():
+    logger.info("Fetching daily book discoveries")
+    return get_daily_discoveries()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './DailyNews.css';
+import './DailyNews.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://139.59.154.175:8000';
 

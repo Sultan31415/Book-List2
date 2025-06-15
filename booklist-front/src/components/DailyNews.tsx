@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './DailyNews.css';
+import styles from './DailyNews.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://139.59.154.175:8000';
 
 interface BookDiscovery {
   title: string;
@@ -15,7 +17,7 @@ const DailyNews: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/daily-discoveries')
+    fetch(`${API_URL}/daily-discoveries`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch discoveries');
         return res.json();
